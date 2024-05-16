@@ -1,0 +1,69 @@
+.model small
+.data
+    enter1 db 'Enter the dividend: $'
+    enter2 db 'Enter the divisor: $'
+    result db 'Quotient: $'
+    dividend db ?
+    divisor db ?
+    quotient db ?
+    remainder db ?
+.stack
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    ; Input dividend
+    lea dx, enter1
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov dividend, al
+
+    ; Input divisor
+    lea dx, enter2
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov divisor, al
+
+    ; Divide numbers
+    mov al, dividend
+    mov bl, divisor
+    xor ah, ah  ; clear ah
+    div bl      ; divide al by bl (dividend by divisor)
+
+    mov quotient, al
+    mov remainder, ah
+
+    ; Display result (quotient)
+    lea dx, result
+    mov ah, 09h
+    int 21h
+
+    mov dl, quotient
+    add dl, 30h  ; convert numeric to ASCII
+    mov ah, 02h
+    int 21h
+
+    ; Display remainder
+    lea dx, result
+    mov ah, 09h
+    int 21h
+
+    mov dl, remainder
+    add dl, 30h  ; convert numeric to ASCII
+    mov ah, 02h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+end main
