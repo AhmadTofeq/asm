@@ -1,0 +1,54 @@
+.model small
+.data
+    enter1 db 'Enter the first number: $'
+    enter2 db 'Enter the second number: $'
+    result db 'Product: $'
+    number1 db ?
+    number2 db ?
+    product db ?
+.stack
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    ; Input first number
+    lea dx, enter1
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov number1, al
+
+    ; Input second number
+    lea dx, enter2
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov number2, al
+
+    ; Multiply numbers
+    mov al, number1
+    mul number2
+    mov product, al
+
+    ; Display result
+    lea dx, result
+    mov ah, 09h
+    int 21h
+
+    mov dl, product
+    add dl, 30h  ; convert numeric to ASCII
+    mov ah, 02h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+end main
