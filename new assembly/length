@@ -1,0 +1,41 @@
+.model small
+.data
+    word db 'Hello', 0
+    length dw ?
+.stack
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    lea si, word  ; load address of the string into SI register
+
+count_length:
+    mov al, [si]  ; load the character at the address in SI into AL
+    cmp al, 0     ; check if it's the null terminator
+    je end_count  ; if null terminator found, jump to end_count
+    inc si        ; move to the next character
+    inc length    ; increment length counter
+    jmp count_length ; jump back to count_length
+
+end_count:
+    ; Display the length
+    mov ah, 09h
+    lea dx, length_msg
+    int 21h
+
+    mov ax, length
+    add ax, 30h  ; convert length to ASCII
+    mov dl, ah   ; move high byte of AX to DL
+    mov ah, 02h
+    int 21h
+
+    mov dl, al   ; move low byte of AX to DL
+    int 21h
+
+    ; Terminate program
+    mov ah, 4ch
+    int 21h
+
+.data
+    length_msg db 'Length: $'
