@@ -1,0 +1,54 @@
+.model small
+.data
+    enter1 db 'Enter the first number: $'
+    enter2 db 'Enter the second number: $'
+    result db 'Result: $'
+    number1 db ?
+    number2 db ?
+    subtraction_result db ?
+.stack
+.code
+main:
+    mov ax, @data
+    mov ds, ax
+
+    ; Input first number
+    lea dx, enter1
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov number1, al
+
+    ; Input second number
+    lea dx, enter2
+    mov ah, 09h
+    int 21h
+
+    mov ah, 01h
+    int 21h
+
+    sub al, 30h  ; convert ASCII to numeric
+    mov number2, al
+
+    ; Subtract numbers
+    mov al, number1
+    sub al, number2
+    mov subtraction_result, al
+
+    ; Display result
+    lea dx, result
+    mov ah, 09h
+    int 21h
+
+    mov dl, subtraction_result
+    add dl, 30h  ; convert numeric to ASCII
+    mov ah, 02h
+    int 21h
+
+    mov ah, 4ch
+    int 21h
+end main
