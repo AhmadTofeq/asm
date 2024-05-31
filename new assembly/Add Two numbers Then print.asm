@@ -22,6 +22,13 @@ main:
     sub al, 30h ; Convert ASCII character to numeric value
     mov [re1], al
 
+    mov dl,0dh
+	mov ah,02h
+	int 21h
+	mov dl,0ah
+	mov ah,02h
+	int 21h
+
     ; Input second number
     mov ah, 09h
     lea dx, ent2
@@ -36,7 +43,14 @@ main:
     mov al, [re1]
     add al, [re2]
     mov [result1], al
-    
+
+    mov dl,0dh
+	mov ah,02h
+	int 21h
+	mov dl,0ah
+	mov ah,02h
+	int 21h
+
     ; Display result message
     mov ah, 09h
     lea dx, result_msg
